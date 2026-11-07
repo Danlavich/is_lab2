@@ -25,6 +25,13 @@ jobs:
       - name: Generate documentation
         run: python generate_docs.py
 
+      - name: Upload documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-docs
+          path: docs.html
+          if-no-files-found: error
+
       - name: Upload repository documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         uses: actions/upload-artifact@v4
