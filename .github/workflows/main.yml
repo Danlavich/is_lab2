@@ -33,7 +33,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload repository documentation
-        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/release'
         uses: actions/upload-artifact@v4
         with:
           name: repository-docs
@@ -96,4 +96,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Update generated documentation"
-          git push origin HEAD:refs/heads/dev
+          git push origin HEAD:refs/heads/release
