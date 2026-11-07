@@ -12,7 +12,7 @@ def render_page(title):
     <title>{escape(title)}</title>
 </head>
 <body>
-    <h1>{title}</h1>
+    <h1>{escape(title)}</h1>
     <p>Страница опубликована через GitHub Actions.</p>
 </body>
 </html>
