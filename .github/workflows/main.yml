@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: project-docs
-          path: docs.html
+          path: dist/docs/index.html
           if-no-files-found: error
 
       - name: Upload repository documentation
