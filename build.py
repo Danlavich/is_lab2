@@ -3,7 +3,7 @@ from pathlib import Path
 
 TITLE = "ПР2: CI/CD - релизная версия"
 
-
+# 123
 def render_page(title):
     """Формирует HTML-страницу и экранирует текст заголовка."""
     return f"""<!doctype html>
