@@ -1,7 +1,7 @@
 from html import escape
 from pathlib import Path
 
-TITLE = "ПР2: CI/CD"
+TITLE = "ПР2: CI/CD - версия 2"
 
 
 def render_page(title):
