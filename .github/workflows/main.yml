@@ -2,7 +2,7 @@ name: CI/CD Lab
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev, release]
   pull_request:
     branches: [main]
 
