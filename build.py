@@ -26,6 +26,10 @@ def main():
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(render_page(TITLE), encoding="utf-8")
 
+def run():
+    """Новая функция"""
+    pass
+
 
 if __name__ == "__main__":
     main()
