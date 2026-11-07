@@ -1,10 +1,9 @@
 from html import escape
-from inspect import getdoc, signature
 from os import getenv
 from pathlib import Path
 
 import build
-
+from inspect import getdoc, getmembers, isfunction, signature
 
 def main():
     output = Path("dist/docs/index.html")
@@ -15,8 +14,11 @@ def main():
     sections = []
     markdown = ["# Документация проекта", f"Заголовок сайта — {build.TITLE}"]
 
-    for function in (build.render_page, build.main):
-        declaration = f"{function.__name__}{signature(function)}"
+    for name, function in getmembers(build, isfunction):
+        if name.startswith("_") or function.__module__ != build.__name__:
+            continue
+
+        declaration = f"{name}{signature(function)}"
         description = getdoc(function) or "Описание отсутствует."
 
         sections.append(

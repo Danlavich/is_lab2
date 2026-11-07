@@ -28,7 +28,8 @@ def main():
 
 def run():
     """Новая функция"""
-    pass
+    print(1)
+    return 1
 
 
 if __name__ == "__main__":
