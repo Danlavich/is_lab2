@@ -25,11 +25,12 @@ jobs:
       - name: Generate documentation
         run: python generate_docs.py
 
-      - name: Upload documentation
+      - name: Upload repository documentation
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         uses: actions/upload-artifact@v4
         with:
-          name: project-docs
-          path: docs.html
+          name: repository-docs
+          path: docs/README.md
           if-no-files-found: error
 
       - name: Run tests
@@ -59,3 +60,33 @@ jobs:
       - name: Deploy site
         id: deployment
         uses: actions/deploy-pages@v4
+
+  commit-docs:
+    name: Commit generated documentation
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: repository-docs
+          path: docs
+
+      - name: Commit and push documentation
+        run: |
+          git add -- docs/README.md
+          if git diff --cached --quiet; then
+            echo "Документация уже актуальна."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update generated documentation"
+          git push origin HEAD:refs/heads/dev

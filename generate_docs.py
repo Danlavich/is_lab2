@@ -13,11 +13,20 @@ def main():
     title = escape(build.TITLE)
     revision = escape(getenv("GITHUB_SHA", "локальная сборка"))
     sections = []
+    markdown = ["# Документация проекта", f"Заголовок сайта — {build.TITLE}"]
 
     for function in (build.render_page, build.main):
-        declaration = escape(f"{function.__name__}{signature(function)}")
-        description = escape(getdoc(function) or "Описание отсутствует.")
-        sections.append(f"<h2><code>{declaration}</code></h2><p>{description}</p>")
+        declaration = f"{function.__name__}{signature(function)}"
+        description = getdoc(function) or "Описание отсутствует."
+
+        sections.append(
+            f"<h2><code>{escape(declaration)}</code></h2><p>{escape(description)}</p>"
+        )
+        markdown.extend([f"## `{declaration}`", description])
+
+    repository_doc = Path("docs/README.md")
+    repository_doc.parent.mkdir(parents=True, exist_ok=True)
+    repository_doc.write_text("\n\n".join(markdown) + "\n", encoding="utf-8")
 
     output.write_text(
         f"""<!doctype html>
