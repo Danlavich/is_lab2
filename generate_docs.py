@@ -1,0 +1,44 @@
+from html import escape
+from inspect import getdoc, signature
+from os import getenv
+from pathlib import Path
+
+import build
+
+
+def main():
+    output = Path("dist/docs/index.html")
+    output.parent.mkdir(parents=True, exist_ok=True)
+
+    title = escape(build.TITLE)
+    revision = escape(getenv("GITHUB_SHA", "локальная сборка"))
+    sections = []
+
+    for function in (build.render_page, build.main):
+        declaration = escape(f"{function.__name__}{signature(function)}")
+        description = escape(getdoc(function) or "Описание отсутствует.")
+        sections.append(f"<h2><code>{declaration}</code></h2><p>{description}</p>")
+
+    output.write_text(
+        f"""<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Документация проекта</title>
+</head>
+<body>
+    <h1>Документация проекта</h1>
+    <p>Заголовок сайта — {title}</p>
+    <p>Коммит сборки — <code>{revision}</code></p>
+    {''.join(sections)}
+    <p><a href="../">Открыть сайт проекта</a></p>
+</body>
+</html>
+""",
+        encoding="utf-8",
+    )
+    print(f"Документация сохранена в {output}")
+
+
+if __name__ == "__main__":
+    main()
