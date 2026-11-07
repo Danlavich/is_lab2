@@ -7,7 +7,7 @@ import build
 
 
 def main():
-    output = Path("docs.html")
+    output = Path("dist/docs/index.html")
     output.parent.mkdir(parents=True, exist_ok=True)
 
     title = escape(build.TITLE)
